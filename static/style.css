@@ -1,0 +1,130 @@
+body{
+    font-family: 'Amatic SC', cursive;
+    background-color: #5fa7f7;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='199' viewBox='0 0 100 199'%3E%3Cg fill='%23cccccc' fill-opacity='0.2'%3E%3Cpath d='M0 199V0h1v1.99L100 199h-1.12L1 4.22V199H0zM100 2h-.12l-1-2H100v2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-attachment: fixed;
+    font-size: 18px;
+
+}
+
+section{
+    width: 100%;
+    display: inline;
+    padding: 10%;
+    background-color: rgba(237, 237, 237, 0.74);
+    border: 1px solid rgb(232, 232, 232);
+    border-radius: 5px;
+    opacity: 0.97;
+}
+
+.navbar.navbar-default.navbar-fixed-top{
+    margin-left: 0;
+    margin-right: 0;
+}
+.container{
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+nav{
+    margin: 0% auto;
+    padding: 0;
+    color: #fff;
+}
+
+.navbar-brand{
+    font-size: 30px;
+
+}
+
+section > h1{
+    text-align: center;
+    color: #000000;
+}
+
+.add_article_form{
+    margin:2% auto;
+    padding: 2%;
+    width: 70%;
+}
+
+.form-control{
+    margin-bottom: 2%;
+
+}
+
+.back-to-firstpage{
+    text-align: center;
+}
+
+section > a{
+    color: #000;
+}
+.where-the-article-is-placed{
+    background: #fff;
+    border-radius: 10px;
+    width: 60%;
+    margin:0 auto;
+    padding: 2%;
+    text-align: center;
+}
+
+section > li{
+    list-style-type: none;
+}
+
+.welcome-info-to-user{
+    background-color: rgba(237, 237, 237, 0.74);
+    border: 1px solid rgb(232, 232, 232);
+    border-radius: 5px;
+    margin:0 auto;
+    padding: 10%;
+    text-align: center;
+
+}
+
+.img-one{
+    width: 30%;
+    height: 30%;
+}
+
+.info-about-articles{
+    text-align: center;
+    padding-top: 2px;
+}
+
+div.thumbnail{
+    padding-top: 1px;
+    text-align: center;
+
+}
+
+div.col-md-6{
+    padding-top: 20px;
+}
+
+h2{
+    padding-bottom: 20px;
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 790px){
+
+    section > h1{
+        font-size: 28px;
+    }
+    .where-the-article-is-placed{
+        width: 98%;
+    }
+    .add_article_form{
+        width: 90%;
+    }
+
+}
+
+@media screen and (max-width: 768px){
+.container{
+    width: 100% !important;
+}
+}

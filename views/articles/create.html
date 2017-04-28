@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MÖRTFORS WEBBTIDNING</title>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <link rel="stylesheet" href="/static/style.css" media="screen" title="no title">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="/">MÖRTFORS WEBBTIDNING</a>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/articles">Arkiv<span class="sr-only">(current)</span></a></li>
+                            </ul>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="/contact">Kontakt</a></li>
+                            </ul>
+
+                </div>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</header>
+<section>
+    <h1>Skapa en ny artikel här</h1>
+    <div class="add_article_form">
+        %if error:
+        <div class="alert alert-danger">
+            {{error}}
+        </div>
+        %end
+        <form class="new_article" action="/articles" method="POST">
+            <label for="title">Rubrik:</label>
+            <input type="text" name="title" id="title" value="{{title}}" class="form-control" placeholder="Rubrik här tack!">
+            <label for="body">Brödtext:</label>
+            <textarea class="form-control" id="body" name="body" rows="12" placeholder="Skriv din artikel här!">{{body}}</textarea>
+            <button onklick="/articles/test-1" class="btn btn-default">Publicera</button>
+        </form>
+
+    </div>
+</section>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+crossorigin="anonymous"></script>
+</div>
+</body>
+</html>
