@@ -51,7 +51,7 @@ section > h1{
 
 .form-control{
     margin-bottom: 2%;
-
+    width: 100% !important;
 }
 
 .back-to-firstpage{
@@ -107,6 +107,65 @@ div.col-md-6{
 h2{
     padding-bottom: 20px;
     text-decoration: underline;
+}
+
+
+.detailBox {
+    width:100%;
+    border:1px solid #bbb;
+    margin-top:10%;
+}
+.titleBox {
+    background-color:#fdfdfd;
+    padding:10px;
+}
+.titleBox label{
+  color:#444;
+  margin:0;
+  display:inline-block;
+}
+
+.commentBox {
+    padding:10px;
+    border-top:1px dotted #bbb;
+}
+.commentBox .form-group:first-child, .actionBox .form-group:first-child {
+    width: 55vh;
+}
+.commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
+    width:auto;
+}
+.actionBox .form-group * {
+    width:100%;
+}
+.taskDescription {
+    margin-top:10px 0;
+}
+.commentList {
+    padding:0;
+    list-style:none;
+    max-height:200px;
+    overflow:auto;
+}
+.commentList li {
+    margin:0;
+    margin-top:10px;
+}
+.commentList li > div {
+    display:table-cell;
+}
+
+.commentText p {
+    margin:0;
+}
+.sub-text {
+    color:#aaa;
+    font-family:verdana;
+    font-size:10px;
+}
+.actionBox {
+    border-top:1px dotted #bbb;
+    padding:10px;
 }
 
 @media screen and (max-width: 790px){
