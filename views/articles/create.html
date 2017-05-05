@@ -64,9 +64,18 @@
                     <textarea class="form-control" id="body" name="body" rows="12" placeholder="Skriv din artikel här!">{{body}}</textarea>
                     <label for="exampleSelect1">Kategori:</label>
                     <select class="form-control" id="exampleSelect1">
-                        <option>Mat och Dryck</option>
-                        <option>Heminredning</option>
-                        <option>Mode</option>
+						<optgroup label ="Mat och dryck">
+							<option value= "recept"> Recept </option>
+							<option value= "inspiration"> Inspiration </option>
+						</optgroup>
+                        <optgroup label= "Heminredning">
+							<option value="Loppmarknad"> Loppmarknad </option>
+							<option value="Trender"> Trender </option>
+						</optgroup>
+						<optgroup label="Mode">
+							<option value= "Trender"> Trender </option>
+							<option value="Outfits"> Outfits </option>
+						</optgroup>
                     </select>
                     <div class="form-group">
    <label for="exampleInputFile">Lägg upp en bild:</label>
