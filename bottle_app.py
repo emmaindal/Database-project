@@ -10,6 +10,9 @@ import psycopg2
 
 # connect to database
 conn = psycopg2.connect(dbname="db_project", host="localhost", port="5432")
+print ("Opened database successfully")
+
+cur = conn.cursor()
 
 def get_articles():
     pass
@@ -30,12 +33,22 @@ def get_article(slug):
 #Nedan listas alla rutter som i slutändan returnerar specifika templates.
 @route("/")
 def index():
-    return template("index")
+	cur.execute("SELECT rubrik,ingress  from artikel")
+	rows = cur.fetchall()
+
+	return template("index.html", rows=rows)
 
 @route("/articles/create", method="GET")
 def show_create_form():
 
     return template("articles/create")
+
+@route("/articles/show", method="GET")
+def visa_hela_artikeln():
+	cur.execute("SELECT rubrik,ingress,brödtext from artikel")
+	artikel = cur.fetchall()
+
+	return template("articles/show", artikel=artikel)
 
 @route("/articles", method="POST")
 def store_article():
@@ -58,11 +71,6 @@ def store_article():
     slug = create_slug(title)
     save_article(title, body)
     return (show_article(slug))
-
-@route("/articles")
-def archive():
-    #Ett arkiv som visar upp alla artiklar
-    return template("articles/index")
 
 @route("/contact")
 def contact():

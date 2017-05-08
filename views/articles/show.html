@@ -35,7 +35,6 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/articles">Arkiv<span class="sr-only">(current)</span></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -49,11 +48,9 @@
         </header>
         <section>
             <div class="where-the-article-is-placed">
-                <h1>{{article['title']}}</h1>
-                <div class="body">
-                    <p>{{!article['body'].replace("\n", "</p><p>")}}</p>
-                </div>
-
+                %for artikel in artikel:
+                {{artikel}}
+                
 
                 <div class="detailBox">
                     <div class="titleBox">

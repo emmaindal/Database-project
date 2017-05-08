@@ -34,7 +34,6 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/articles">Arkiv<span class="sr-only">(current)</span></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -50,13 +49,24 @@
         <section class="welcome-info-to-user">
             <h1>MÖRTFORS WEBBTIDNING</h1>
             <br>
-            <p>
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            </p>
-            <p>
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            </p>
-            <br>
+            <div class="row">
+                %for artikel in rows:
+
+                <div class="col-sm-6 col-md-6">
+                  <div class="thumbnail">
+                    <div class="caption">
+                        {{artikel}}
+
+                      <p>
+                        <a href="/articles/show" class="btn btn-default" role="button">Read article</a>
+                        <a href="/articles/" class="btn btn-default" role="button">Edit article</a>
+                        <link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+            %end
             <br>
         </section>
     </div>
