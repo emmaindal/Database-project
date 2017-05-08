@@ -1,4 +1,4 @@
-CREATE DATABASE db_project;
+CREATE DATABASE projekt_mörtfors_emma_matilda;
 
 CREATE TABLE artikel(artikelid INT NOT NULL PRIMARY KEY, rubrik VARCHAR(40) NOT NULL, ingress TEXT NOT NULL, brödtext TEXT NOT NULL, publiceringsdatum DATE NOT NULL, skribentid INT NOT NULL, fotoid INT, kategoriid INT NOT NULL);
 
@@ -42,6 +42,9 @@ ALTER TABLE skrivenav
 ADD CONSTRAINT FK_skrivenavtva
 FOREIGN KEY (skribentid) REFERENCES skribent(personnummer);
 
-
 INSERT INTO skribent
 VALUES (2, 'Matilda', 920611)
+
+INSERT INTO artikel VALUES(1, 'Pizza', 'Pizza är gott', 'Pizza är en himla härlig måltid', '2017-05-03', NULL, 1);
+
+INSERT INTO artikel VALUES(2, 'Tacos', 'Tacos är en fredagsrätt', 'Tacos är en himla bra rätt som bara äts på fredagar', '2017-05-05', NULL, 2);

@@ -1,63 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 from bottle import route, run, template, static_file, redirect, request, error
 import os, sys
 import codecs
 import json
+import psycopg2
+
+# connect to database
+conn = psycopg2.connect(dbname="db_project", host="localhost", port="5432")
 
 def get_articles():
-    # Listar alla filer som finns i storage
-    files = os.listdir("storage")
-
-    # Filtrerar filerna så att inte dolda filer skrivs ut, ex .DS_Store
-    filtered_files = [file for file in files if not file.startswith('.')]
-    articles = []
-
-    for file in filtered_files:
-        slug, extension = os.path.splitext(file)
-        # Läser in varje fil i en dictionary
-        article = get_article(slug)
-        articles.append(article)
-
-    # Returnerar resultatet som en lista av flera dicitionarys
-    return articles
+    pass
 
 def save_article(title, body):
-    # Skapar en slug från titeln för en snyggare utskrift i url:n
-    slug = create_slug(title)
-
-    # Hämtar en specifik sökväg
-    file_name = get_file_path_from_slug(slug)
-
-    '''
-    Öppnar filen i skrivläge och skriver innehållet i en jsonfil i följande
-    ordning. Stänger därefter filen.
-    '''
-    file = codecs.open(file_name, "w", 'UTF-8')
-    file.write(json.dumps({
-        "title": title,
-        "body": body,
-        "slug": slug,
-    }))
-    file.close()
+    pass
 
 def create_slug(title):
-    #För en snyggare utskrift i URL:n byter jag ut åäö samt mellanslag mot "a" "o" och "-".
-    return title.lower().replace("å", "a").replace("ä", "a").replace("ö", "o").replace(" ", "-")
+    pass
 
 def get_file_path_from_slug(slug):
-    return "storage/" + slug + ".json"
+    pass
 
 def get_article(slug):
-    # letar efter filen som heter <slug>.json
-    file_name = get_file_path_from_slug(slug)
-    file = codecs.open(file_name, "r", "UTF-8")
-    #Konverterar innehållet från JSON till en dictionary
-    content = json.loads(file.read())
-    file.close()
-
-    return content
+	pass
 
 
 #Nedan listas alla rutter som i slutändan returnerar specifika templates.
@@ -67,10 +34,8 @@ def index():
 
 @route("/articles/create", method="GET")
 def show_create_form():
-    title = request.query.title
-    body = request.query.body
-    error = request.query.error
-    return template("articles/create", title=title, body=body, error=error)
+
+    return template("articles/create")
 
 @route("/articles", method="POST")
 def store_article():
@@ -84,11 +49,11 @@ def store_article():
 
     if not title:
         error = "You must enter a title"
-        return template("articles/create", title=title, body=body, error=error)
+        return template("articles/create")
 
     if not body:
         error = "You must enter the article text"
-        return template("articles/create", title=title, body=body, error=error)
+        return template("articles/create")
 
     slug = create_slug(title)
     save_article(title, body)
@@ -97,20 +62,7 @@ def store_article():
 @route("/articles")
 def archive():
     #Ett arkiv som visar upp alla artiklar
-    return template("articles/index", articles=get_articles())
-
-@route("/articles/<slug>")
-def show_article(slug):
-    '''
-    Visar upp en specifik artikel. Försöker man surfa in på en icke-existerande
-    artikel returneras en errorsida
-    '''
-    try:
-        article = get_article(slug)
-    except:
-        return template("error")
-
-    return template("articles/show", article=article)
+    return template("articles/index")
 
 @route("/contact")
 def contact():
