@@ -34,7 +34,7 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -50,26 +50,26 @@
             <h1>Skapa en ny artikel här</h1>
             <div class="add_article_form">
 
-                <form class="new_article" action="database.py" method="POST">
+                <form class="new_article" action="/test" method="POST">
                     <label for="rubrik">Rubrik:</label>
                     <input type="text" name="rubrik" id="rubrik" value="" class="form-control" placeholder="Rubrik här tack!" required>
                     <label for="ingress">Ingress:</label>
                     <input type="text" name="ingress" id="ingress" value="" class="form-control" placeholder="Ingress här tack!" required>
-                    <label for="brödtext">Brödtext:</label>
-                    <textarea class="form-control" id="te" name="body" rows="12" placeholder="Skriv din artikel här!" required></textarea>
+                    <label for="text">Brödtext:</label>
+                    <textarea class="form-control" id="text" name="text" rows="12" placeholder="Skriv din artikel här!" required></textarea>
                     <label for="exampleSelect1" required>Kategori:</label>
-                    <select class="form-control" id="exampleSelect1">
+                    <select class="form-control" id="huvudkategori" name="huvudkategori">
 						<optgroup label ="Mat och dryck">
-							<option value= "recept"> Recept </option>
-							<option value= "inspiration"> Inspiration </option>
+							<option value= "recept" name="underkategori"> Recept </option>
+							<option value= "inspiration" name="underkategori"> Inspiration </option>
 						</optgroup>
                         <optgroup label= "Heminredning">
-							<option value="Loppmarknad"> Loppmarknad </option>
-							<option value="Trender"> Trender </option>
+							<option value="Loppmarknad" name="underkategori"> Loppmarknad </option>
+							<option value="Trender" name="underkategori"> Trender </option>
 						</optgroup>
 						<optgroup label="Mode">
-							<option value= "Trender"> Trender </option>
-							<option value="Outfits"> Outfits </option>
+							<option value= "Trender" name="underkategori"> Trender </option>
+							<option value="Outfits" name="underkategori"> Outfits </option>
 						</optgroup>
                     </select>
                     <div class="form-group">
@@ -80,10 +80,10 @@
                     <div class="form-group row">
                         <label for="example-datetime-local-input" class="col-2 col-form-label" required>Datum och tid</label>
                         <div class="col-10">
-                            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+                            <input class="form-control" name="publiceringsdatum" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
                         </div>
                     </div>
-                    <button onklick="/articles/test-1" class="btn btn-default">Publicera</button>
+                    <button type="submit" class="btn btn-default">Publicera</button>
                 </form>
 
             </div>

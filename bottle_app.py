@@ -3,34 +3,22 @@
 
 
 from bottle import route, run, template, static_file, redirect, request, error
+import random
 import os, sys
 import codecs
 import json
 import psycopg2
 
 # connect to database
-conn = psycopg2.connect(dbname="db_project", host="localhost", port="5432")
-print ("Opened database successfully")
+try:
+    conn = psycopg2.connect(dbname="db_project", host="localhost", port="5432")
+    print ("Opened database successfully")
+
+except:
+    print("Could not connect to database")
 
 cur = conn.cursor()
 
-def get_articles():
-    pass
-
-def save_article(title, body):
-    pass
-
-def create_slug(title):
-    pass
-
-def get_file_path_from_slug(slug):
-    pass
-
-def get_article(slug):
-	pass
-
-
-#Nedan listas alla rutter som i slutändan returnerar specifika templates.
 @route("/")
 def index():
 	cur.execute("SELECT rubrik,ingress  from artikel")
@@ -38,43 +26,39 @@ def index():
 
 	return template("index.html", rows=rows)
 
-@route("/articles/create", method="GET")
+@route("/create", method="GET")
 def show_create_form():
 
-    return template("articles/create")
+    return template("create.html")
 
-@route("/articles/show", method="GET")
+@route("/show", method="GET")
 def visa_hela_artikeln():
 	cur.execute("SELECT rubrik,ingress,brödtext from artikel")
 	artikel = cur.fetchall()
 
-	return template("articles/show", artikel=artikel)
+	return template("show.html", artikel=artikel)
 
-@route("/articles", method="POST")
+@route("/", method="POST")
 def store_article():
-    title = request.forms.title
-    body = request.forms.body
+    artikelid = random.randint(1,100)
+    rubrik = request.forms.get("rubrik")
+    ingress = request.forms.get("ingress")
+    text = request.forms.get("text")
+    publiceringsdatum = request.forms.get("publiceringsdatum")
 
-    '''
-    Kontrollerar så att användaren skrivit in både titel och body,
-    annars kan inte artikeln publiceras.
-    '''
+    kategoriid = "1"
 
-    if not title:
-        error = "You must enter a title"
-        return template("articles/create")
+    print(artikelid, rubrik, ingress, text, publiceringsdatum, kategoriid)
 
-    if not body:
-        error = "You must enter the article text"
-        return template("articles/create")
+    cur.execute("INSERT INTO artikel(artikelid, rubrik, ingress, brödtext, publiceringsdatum, kategoriid) VALUES(%s,%s,%s,%s,%s,%s)",(artikelid, rubrik, ingress, text, publiceringsdatum, kategoriid))
+    conn.commit()
 
-    slug = create_slug(title)
-    save_article(title, body)
-    return (show_article(slug))
+    index()
+
 
 @route("/contact")
 def contact():
-    return template("contact")
+    return template("contact.html")
 
 @route('/static/<filename>')
 def server_static(filename):
@@ -83,7 +67,7 @@ def server_static(filename):
 
 @error(404)
 def error404(error):
-    return template("error")
+    return template("error.html")
 
 
 run(host="127.0.0.1", port=8080)
