@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>MÖRTFORS WEBBTIDNING</title>
+    <title>MÖRTFORS DAGBLAD</title>
     <meta name="viewport" content="initial-scale=1.0, width=device-width">
     <link rel="stylesheet" href="/static/style.css" media="screen" title="no title">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -28,13 +28,14 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="/">MÖRTFORS WEBBTIDNING</a>
+                            <a class="navbar-brand" href="/">MÖRTFORS DAGBLAD</a>
                         </div>
 
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li><a href="/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/skribent">Lägg till skribent<span class="sr-only">(current)</span></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -50,7 +51,7 @@
             <h1>Skapa en ny artikel här</h1>
             <div class="add_article_form">
 
-                <form class="new_article" action="/test" method="POST">
+                <form class="new_article" action="/update" method="POST">
                     <label for="rubrik">Rubrik:</label>
                     <input type="text" name="rubrik" id="rubrik" value="" class="form-control" placeholder="Rubrik här tack!" required>
                     <label for="ingress">Ingress:</label>
@@ -80,7 +81,7 @@
                     <div class="form-group row">
                         <label for="example-datetime-local-input" class="col-2 col-form-label" required>Datum och tid</label>
                         <div class="col-10">
-                            <input class="form-control" name="publiceringsdatum" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+                            <input class="form-control" name="publiceringsdatum" type="datetime-local" value="2017-01-01T13:45:00" id="example-datetime-local-input">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-default">Publicera</button>

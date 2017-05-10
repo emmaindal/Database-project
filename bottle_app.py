@@ -21,7 +21,7 @@ cur = conn.cursor()
 
 @route("/")
 def index():
-	cur.execute("SELECT rubrik,ingress  from artikel")
+	cur.execute("SELECT rubrik,ingress from artikel")
 	rows = cur.fetchall()
 
 	return template("index.html", rows=rows)
@@ -38,7 +38,7 @@ def visa_hela_artikeln():
 
 	return template("show.html", artikel=artikel)
 
-@route("/", method="POST")
+@route("/update", method="POST")
 def store_article():
     artikelid = random.randint(1,100)
     rubrik = request.forms.get("rubrik")
@@ -53,7 +53,27 @@ def store_article():
     cur.execute("INSERT INTO artikel(artikelid, rubrik, ingress, brödtext, publiceringsdatum, kategoriid) VALUES(%s,%s,%s,%s,%s,%s)",(artikelid, rubrik, ingress, text, publiceringsdatum, kategoriid))
     conn.commit()
 
-    index()
+    return template("sparad_artikel.html")
+
+
+@route("/skribent", method="GET")
+def skribent():
+
+    return template("skribent.html")
+
+@route("/lagrad_skribent", method="POST")
+def lagrad_skribent():
+    skribentid = random.randint(1,100)
+    namn = request.forms.get("namn")
+    personnummer = request.forms.get("personnummer")
+
+    print(skribentid, namn, personnummer)
+
+    cur.execute("INSERT INTO skribent(skribentid, namn, personnummer) VALUES(%s,%s,%s)",(skribentid, namn, personnummer))
+    conn.commit()
+
+
+    return template("lagrad_skribent.html")
 
 
 @route("/contact")
