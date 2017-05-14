@@ -5,8 +5,6 @@
 from bottle import route, run, template, static_file, redirect, request, error
 import random
 import os, sys
-import codecs
-import json
 import psycopg2
 
 # connect to database
@@ -21,7 +19,7 @@ cur = conn.cursor()
 
 @route("/")
 def index():
-	cur.execute("SELECT rubrik,ingress from artikel")
+	cur.execute("SELECT rubrik,ingress,publiceringsdatum from artikel")
 	rows = cur.fetchall()
 
 	return template("index.html", rows=rows)
@@ -75,6 +73,26 @@ def lagrad_skribent():
 
     return template("lagrad_skribent.html")
 
+@route("/bild")
+def contact():
+
+    return template("bild.html")
+
+@route("/lagrad_bild", method="POST")
+def lagrad_bild():
+    fotoid = random.randint(1,100)
+    altnamn = request.forms.get("altnamn")
+    url = request.forms.get('url')
+    
+
+
+
+    print(fotoid, altnamn, foto)
+    cur.execute("INSERT INTO bild(fotoid, altnamn, foto) VALUES(%s,%s,%s)",(fotoid, altnamn, foto))
+    conn.commit()
+
+
+    return template("lagrad_bild.html")
 
 @route("/contact")
 def contact():

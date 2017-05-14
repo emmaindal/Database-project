@@ -16,7 +16,6 @@
 <body>
     <div class="container">
         <header>
-
             <nav class="navbar navbar-default navbar-fixed-top">
                 <div class="container">
                     <div class="container-fluid">
@@ -44,66 +43,17 @@
                                 <li><a href="/contact">Kontakt</a></li>
                             </ul>
 
-                        </div>
-                    </div><!-- /.navbar-collapse -->
+                        </div><!-- /.navbar-collapse -->
+                    </div>
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
-        <section>
-            <div class="where-the-article-is-placed">
-                %for artikel in artikel:
-                {{artikel}}
+
+        <section class="welcome-info-to-user">
+            <h1>Din bild är nu tillagd på Mörtfors Dagblad</h1>
+            <a href="/create" class="btn btn-default" role="button">Skriv en artikel</a>
 
 
-                <div class="detailBox">
-                    <div class="titleBox">
-                        <label>Kommentera här</label>
-                        <button type="button" class="close" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="commentBox">
-
-                        <p class="taskDescription">Här kan du kommentera denna artikel. Olämpliga kommentarer tas bort. </p>
-                    </div>
-                    <div class="actionBox">
-                        <ul class="commentList">
-                            <li>
-
-                                <div class="commentText"><button type="button" class="close" aria-hidden="true">&times;</button>
-                                    <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                </div>
-                            </li>
-                            <li>
-
-                                <div class="commentText"><button type="button" class="close" aria-hidden="true">&times;</button>
-                                    <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                </div>
-                            </li>
-                            <li>
-
-                                <div class="commentText"><button type="button" class="close" aria-hidden="true">&times;</button>
-                                    <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                </div>
-                            </li>
-                        </ul>
-                        <form class="form-inline" role="form">
-                            <div class="form-group">
-                                <input class="form-control" type="text" placeholder="Your comments" />
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-default">Add</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-                <br>
-                <br>
-                <a href="/" class="btn btn-default" role="button">Back to archive</a>
-
-            </div>
         </section>
     </div>
 </body>

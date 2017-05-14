@@ -43,30 +43,37 @@
                                 <li><a href="/contact">Kontakt</a></li>
                             </ul>
 
+                        </div>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+        <section>
+            <h1>Lägg till bilder för att kunna använda dom i dina aritiklar</h1>
+            <div class="add_article_form">
+
+                <form class="new_article" action="/lagrad_bild" method="POST" enctype='multipart/form-data'>
+                    <div class="form-group">
+                        <label for="foto">Lägg upp en bild:</label>
+                        <input type="file" accept="image/JPEG" class="form-control-file" id="foto" aria-describedby="foto">
+                        <small id="foto" class="form-text text-muted">Här kan du lägga upp en bild som kan användas till din artikel.</small>
+                    </div>
+                    <label for="altnamn">Alt-namn:</label>
+                    <input type="text" name="altnamn" id="altnamn" value="" class="form-control" placeholder="Ett ord som beskriver vad bilden föreställer!" required>
+
+                <button type="submit" class="btn btn-default" value="upload">Lägg till</button>
+                </form>
+
             </div>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-</header>
-<section class="welcome-info-to-user">
-    <h1>Kontakt</h1>
-    <br>
-    <ul class="list-unstyled">
-        <h4>Emma Indal</h4>
-		<h4>Matilda Sundblom</h4>
-        <h4>Students at Malmö University</h4>
-        <h4>Email: <a href="mailto:emma.indahl@gmail.com?subject=feedback">emma.indahl@gmail.com</a></h4>
-		<h4>Email: <a href="mailto:matilda.sundblom@gmail.com?subject=feedback">matilda.sundblom@gmail.com</a></h4>
-    </ul>
+        </section>
 
-</section>
-</div>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    </div>
 </body>
-<!-- Latest compiled and minified JavaScript -->
-<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-crossorigin="anonymous"></script>
 </html>
