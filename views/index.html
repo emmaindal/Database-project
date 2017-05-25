@@ -53,14 +53,13 @@
             <h1>MÖRTFORS DAGBLAD</h1>
             <br>
             <div class="row">
-                %for artikel in rows:
+                %for row in rows:
 
 
                 <div class="col-sm-6 col-md-6">
                   <div class="thumbnail">
                     <div class="caption">
-                        {{artikel}}
-
+                        <h4>{{row}}</h4>
                       <p>
                         <a href="/show" class="btn btn-default" role="button">Read article</a>
                         <link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">

@@ -61,8 +61,6 @@
                              <option>{{namn}}</option>
                              %end
                             </select>
-
-
                      </div>
                     <label for="rubrik">Rubrik:</label>
                     <input type="text" name="rubrik" id="rubrik" value="" class="form-control" placeholder="Rubrik här tack!" required>
@@ -70,25 +68,22 @@
                     <input type="text" name="ingress" id="ingress" value="" class="form-control" placeholder="Ingress här tack!" required>
                     <label for="text">Brödtext:</label>
                     <textarea class="form-control" id="text" name="text" rows="12" placeholder="Skriv din artikel här!" required></textarea>
-                    <label for="exampleSelect1" required>Kategori:</label>
-                    <select class="form-control" id="huvudkategori" name="huvudkategori">
-						<optgroup label ="Mat och dryck">
-							<option value= "recept" name="underkategori"> Recept </option>
-							<option value= "inspiration" name="underkategori"> Inspiration </option>
-						</optgroup>
-                        <optgroup label= "Heminredning">
-							<option value="Loppmarknad" name="underkategori"> Loppmarknad </option>
-							<option value="Trender" name="underkategori"> Trender </option>
-						</optgroup>
-						<optgroup label="Mode">
-							<option value= "Trender" name="underkategori"> Trender </option>
-							<option value="Outfits" name="underkategori"> Outfits </option>
-						</optgroup>
-                    </select>
                     <div class="form-group">
-                        <label for="exampleInputFile">Lägg upp en bild:</label>
-                        <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-                        <small id="fileHelp" class="form-text text-muted">Här kan du lägga upp en bild som tillhör din artikel.</small>
+                       <label for="exampleSelect1">Välj huvudkatekori:</label>
+                           <select class="form-control" id="exampleSelect1">
+                             %for huvudkategori in huvudkategori:
+                             <option>{{huvudkategori}}</option>
+                             %end
+                            </select>
+                     </div>
+                    <div class="form-group">
+                        <label for="exampleSelect1">Välj bild:</label>
+                            <select class="form-control" id="exampleSelect1">
+                              %for foto in foto:
+                              <option>{{foto}}</option>
+                              %end
+                             </select>
+                        <small id="foto" class="form-text text-muted">Här kan du lägga upp en bild som tillhör din artikel.</small>
                     </div>
                     <div class="form-group row">
                         <label for="example-datetime-local-input" class="col-2 col-form-label" required>Datum och tid</label>

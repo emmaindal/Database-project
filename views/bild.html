@@ -52,16 +52,17 @@
             <h1>Lägg till bilder för att kunna använda dom i dina aritiklar</h1>
             <div class="add_article_form">
 
-                <form class="new_article" action="/lagrad_bild" method="POST" enctype='multipart/form-data'>
+                <form class="new_article" action="/lagrad_bild" method="POST">
                     <div class="form-group">
-                        <label for="foto">Lägg upp en bild:</label>
-                        <input type="file" accept="image/JPEG" class="form-control-file" id="foto" aria-describedby="foto">
-                        <small id="foto" class="form-text text-muted">Här kan du lägga upp en bild som kan användas till din artikel.</small>
+                        <small id="foto" class="form-text text-muted">Välj en bild, kopiera bildens url och klistra in här.</small>
+                        <br />
+                        <label for="foto">Lägg upp din url till bilden:</label>
+                        <input type="text" class="form-control" name="foto" id="foto" aria-describedby="foto">
+
                     </div>
                     <label for="altnamn">Alt-namn:</label>
                     <input type="text" name="altnamn" id="altnamn" value="" class="form-control" placeholder="Ett ord som beskriver vad bilden föreställer!" required>
-
-                <button type="submit" class="btn btn-default" value="upload">Lägg till</button>
+                    <button type="submit" name="submit" class="btn btn-default">Lägg till</button>
                 </form>
 
             </div>

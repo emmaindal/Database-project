@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from bottle import route, run, template, static_file, redirect, request, error
+from bottle import get, route, run, template, static_file, redirect, request, error
 import random
 import os, sys
 import psycopg2
+import urllib
 
 # connect to database
 try:
@@ -17,9 +18,7 @@ except:
 cur = conn.cursor()
 
 def skriv_ut_kategorier():
-    cur.execute("SELECT huvudkategori, underkategori, underkategori2 from kategori")
-    kategori = cur.fetchall()
-    print(kategori)
+    pass
 
 @route("/")
 def index():
@@ -30,19 +29,27 @@ def index():
 
 @route("/create", method="GET")
 def show_create_form():
-    skriv_ut_kategorier()
+    #skriver ut de huvudkategorier som går att välja på.
+    cur.execute("SELECT huvudkategori from kategori")
+    huvudkategori = cur.fetchall()
+    print(huvudkategori)
 
-
-    #skriver ut skribenter som lagrats i databasen i en dropdown i formuläret.
+    #skriver ut skribenter som lagrats i databasen i en dropdown.
     cur.execute("SELECT namn from skribent")
     skribent = cur.fetchall()
     print(skribent)
 
-    return template("create.html", skribent=skribent)
+    #skriver ut de foton som lagrats i databasen i en dropdown,
+    cur.execute("SELECT altnamn from bild")
+    foto = cur.fetchall()
+    print(foto)
+
+
+    return template("create.html", skribent=skribent, foto=foto, huvudkategori=huvudkategori)
 
 @route("/show", method="GET")
 def visa_hela_artikeln():
-	cur.execute("SELECT rubrik,ingress,brödtext from artikel")
+	cur.execute("SELECT artikel.rubrik,artikel.ingress,artikel.brödtext, skribent.namn FROM artikel,skribent where artikel.rubrik = ")
 	artikel = cur.fetchall()
 
 	return template("show.html", artikel=artikel)
@@ -72,12 +79,13 @@ def skribent():
 
 @route("/lagrad_skribent", method="POST")
 def lagrad_skribent():
+    skribentid = random.randint(1,100)
     namn = request.forms.get("namn")
     personnummer = request.forms.get("personnummer")
 
-    print(namn, personnummer)
+    print(skribentid, namn, personnummer)
 
-    cur.execute("INSERT INTO skribent(namn, personnummer) VALUES(%s,%s)",(namn, personnummer))
+    cur.execute("INSERT INTO skribent(skribentid, namn, personnummer) VALUES(%s,%s,%s)",(skribentid, namn, personnummer))
     conn.commit()
 
 
@@ -92,7 +100,7 @@ def contact():
 def lagrad_bild():
     fotoid = random.randint(1,100)
     altnamn = request.forms.get("altnamn")
-    url = request.forms.get('url')
+    foto = request.forms.get('foto')
 
     print(fotoid, altnamn, foto)
     cur.execute("INSERT INTO bild(fotoid, altnamn, foto) VALUES(%s,%s,%s)",(fotoid, altnamn, foto))
