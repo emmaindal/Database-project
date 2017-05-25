@@ -17,15 +17,18 @@ except:
 
 cur = conn.cursor()
 
+def skriven_av():
+    pass
+
 def skriv_ut_kategorier():
     pass
 
 @route("/")
 def index():
 	cur.execute("SELECT rubrik,ingress,publiceringsdatum from artikel")
-	rows = cur.fetchall()
+	artiklar = cur.fetchall()
 
-	return template("index.html", rows=rows)
+	return template("index.html", artiklar=artiklar)
 
 @route("/create", method="GET")
 def show_create_form():
@@ -40,37 +43,38 @@ def show_create_form():
     print(skribent)
 
     #skriver ut de foton som lagrats i databasen i en dropdown,
-    cur.execute("SELECT altnamn from bild")
-    foto = cur.fetchall()
-    print(foto)
+    cur.execute("SELECT fotoid from bild")
+    bild = cur.fetchall()
 
-
-    return template("create.html", skribent=skribent, foto=foto, huvudkategori=huvudkategori)
+    return template("create.html", skribent=skribent, bild=bild, huvudkategori=huvudkategori)
 
 @route("/show", method="GET")
 def visa_hela_artikeln():
-	cur.execute("SELECT artikel.rubrik,artikel.ingress,artikel.brödtext, skribent.namn FROM artikel,skribent where artikel.rubrik = ")
-	artikel = cur.fetchall()
+    cur.execute("SELECT artikel.rubrik,artikel.ingress,artikel.brödtext,skribent.namn, bild.foto FROM artikel,skribent,bild where artikel.rubrik = 'test'")
+    artikel = cur.fetchall()
+    print(artikel)
 
-	return template("show.html", artikel=artikel)
+    return template("show.html", artikel=artikel)
 
 @route("/update", method="POST")
 def store_article():
+    skribentid = requestforms.get("skribentid")
     artikelid = random.randint(1,100)
     rubrik = request.forms.get("rubrik")
     ingress = request.forms.get("ingress")
     text = request.forms.get("text")
     publiceringsdatum = request.forms.get("publiceringsdatum")
-
+    #bild = request.forms.get("bild")
     kategoriid = "1"
 
-    print(artikelid, rubrik, ingress, text, publiceringsdatum, kategoriid)
+    print(artikelid, rubrik, ingress, text, publiceringsdatum, bild, kategoriid)
 
-    cur.execute("INSERT INTO artikel(artikelid, rubrik, ingress, brödtext, publiceringsdatum, kategoriid) VALUES(%s,%s,%s,%s,%s,%s)",(artikelid, rubrik, ingress, text, publiceringsdatum, kategoriid))
+    cur.execute("INSERT INTO artikel(artikelid, rubrik, ingress, brödtext, publiceringsdatum, kategoriid) VALUES(%s,%s,%s,%s,%s,%s,%s)",(artikelid, rubrik, ingress, text, publiceringsdatum, bild, kategoriid))
+    conn.commit()
+    cur.execute("INSERT INTO skrivenav(artikelid, skribentid) VALUES(%s,%s)",(artikelid, skribentid))
     conn.commit()
 
     return template("sparad_artikel.html")
-
 
 @route("/skribent", method="GET")
 def skribent():

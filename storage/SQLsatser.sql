@@ -5,7 +5,7 @@ Drop database if exists projekt_mörtfors_emma_matilda;
 revoke alla privileges on database projekt_mörtfors_emma_matilda from public;
 \c projekt_mörtfors_emma_matilda;
 
-CREATE TABLE artikel(artikelid INT NOT NULL PRIMARY KEY, rubrik VARCHAR(40), ingress TEXT, brödtext TEXT, publiceringsdatum DATE, skribentid INT, fotoid INT, kategoriid INT);
+CREATE TABLE artikel(artikelid INT NOT NULL PRIMARY KEY, rubrik VARCHAR(40), ingress TEXT, brödtext TEXT, publiceringsdatum DATE, fotoid INT, kategoriid INT);
 
 CREATE TABLE skribent(skribentid INT NOT NULL PRIMARY KEY, namn VARCHAR(40), personnummer INT, anteckning VARCHAR(60));
 

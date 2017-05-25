@@ -56,7 +56,7 @@
                 <form class="new_article" action="/update" method="POST">
                     <div class="form-group">
                        <label for="exampleSelect1">Välj skribent:</label>
-                           <select class="form-control" id="exampleSelect1">
+                           <select class="form-control" id="skribentid">
                              %for namn in skribent:
                              <option>{{namn}}</option>
                              %end
@@ -69,21 +69,22 @@
                     <label for="text">Brödtext:</label>
                     <textarea class="form-control" id="text" name="text" rows="12" placeholder="Skriv din artikel här!" required></textarea>
                     <div class="form-group">
-                       <label for="exampleSelect1">Välj huvudkatekori:</label>
-                           <select class="form-control" id="exampleSelect1">
+                       <label for="huvudkategori">Välj huvudkatekori:</label>
+                           <select class="form-control" id="huvudkategori">
                              %for huvudkategori in huvudkategori:
                              <option>{{huvudkategori}}</option>
                              %end
                             </select>
                      </div>
                     <div class="form-group">
-                        <label for="exampleSelect1">Välj bild:</label>
-                            <select class="form-control" id="exampleSelect1">
-                              %for foto in foto:
-                              <option>{{foto}}</option>
-                              %end
+                        <label for="foto">Välj bild:</label>
+                            <select name="foto" class="form-control" id="foto">
+                                %for fotoid in bild:
+                                  <option>{{fotoid}}</option>
+                                %end
                              </select>
-                        <small id="foto" class="form-text text-muted">Här kan du lägga upp en bild som tillhör din artikel.</small>
+
+                        <small id="bild" class="form-text text-muted">Här kan du lägga upp en bild som tillhör din artikel.</small>
                     </div>
                     <div class="form-group row">
                         <label for="example-datetime-local-input" class="col-2 col-form-label" required>Datum och tid</label>
