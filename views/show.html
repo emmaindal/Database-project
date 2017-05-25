@@ -51,10 +51,15 @@
         </header>
         <section>
             <div class="where-the-article-is-placed">
-                %for artikel in artikel:
-                {{artikel}}
-
-
+                %for row in artikel:
+                    <h1>{{row[0]}}</h1>
+                    <h4>{{row[1]}}</h4>
+                    <p>{{row[2]}}</p>
+                    <br>
+                    <p>Skribent: {{row[3]}}</p>
+                    <br>
+                    <img src="{{row[4]}}" height="100%" width="100%" alt="">
+                %end
                 <div class="detailBox">
                     <div class="titleBox">
                         <label>Kommentera här</label>
@@ -62,7 +67,7 @@
                     </div>
                     <div class="commentBox">
 
-                        <p class="taskDescription">Här kan du kommentera denna artikel. Olämpliga kommentarer tas bort. </p>
+                        <p class="taskDescription">Här kan du kommentera denna artikel. Olämpliga kommentarer tas bort direkt. </p>
                     </div>
                     <div class="actionBox">
                         <ul class="commentList">
@@ -84,7 +89,6 @@
 
                                 <div class="commentText"><button type="button" class="close" aria-hidden="true">&times;</button>
                                     <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
                                 </div>
                             </li>
                         </ul>
@@ -93,7 +97,7 @@
                                 <input class="form-control" type="text" placeholder="Your comments" />
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-default">Add</button>
+                                <button class="btn btn-default">Kommentera</button>
                             </div>
                         </form>
 
@@ -101,7 +105,7 @@
                 </div>
                 <br>
                 <br>
-                <a href="/" class="btn btn-default" role="button">Back to archive</a>
+                <a href="/" class="btn btn-default" role="button">Tillbaka till arkivet</a>
 
             </div>
         </section>
