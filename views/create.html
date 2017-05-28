@@ -55,11 +55,13 @@
 
                 <form class="new_article" action="/update" method="POST">
                     <div class="form-group">
-                       <label for="exampleSelect1">Välj skribent:</label>
-                           <select class="form-control" id="skribentid">
-                             %for namn in skribent:
-                             <option>{{namn}}</option>
-                             %end
+                       <label for="skribentid">Välj skribent:</label>
+                           <select name="skribentid" class="form-control" id="skribentid" >
+                             %for item in skribent:
+                                 %for x in item:
+                                     <option>{{x}}</option>
+                                %end
+                            %end
                             </select>
                      </div>
                     <label for="rubrik">Rubrik:</label>
@@ -71,25 +73,31 @@
                     <div class="form-group">
                        <label for="huvudkategori">Välj huvudkatekori:</label>
                            <select class="form-control" id="huvudkategori">
-                             %for huvudkategori in huvudkategori:
-                             <option>{{huvudkategori}}</option>
+                              %for x in kategori:
+
+                                 <option>{{x}}</option>
                              %end
                             </select>
                      </div>
                     <div class="form-group">
-                        <label for="foto">Välj bild:</label>
-                            <select name="foto" class="form-control" id="foto">
-                                %for fotoid in bild:
-                                  <option>{{fotoid}}</option>
-                                %end
+                        <label for="bild">Välj bild:</label>
+                            <select name="bild" class="form-control" id="bild">
+                                %for item in bild:
+                                    %for fotoid in item:
+                                        <option>{{fotoid}}</option>
+                                   %end
+                               %end
                              </select>
 
                         <small id="bild" class="form-text text-muted">Här kan du lägga upp en bild som tillhör din artikel.</small>
                     </div>
+                    <label for="bildtext">Bildtext:</label>
+                    <input type="text" name="bildtext" id="bildtext" value="" class="form-control" placeholder="Skriv en text angående vad din bild föreställer!" required>
+
                     <div class="form-group row">
                         <label for="example-datetime-local-input" class="col-2 col-form-label" required>Datum och tid</label>
                         <div class="col-10">
-                            <input class="form-control" name="publiceringsdatum" type="datetime-local" value="2017-01-01T13:45:00" id="example-datetime-local-input">
+                            <input class="form-control" name="publiceringsdatum" type="datetime-local"  id="example-datetime-local-input">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-default">Publicera</button>

@@ -53,16 +53,19 @@
             <h1>MÖRTFORS DAGBLAD</h1>
             <br>
             <div class="row">
-                %for row in artiklar:
+            % for r in artikel:
 
                 <div class="col-sm-6 col-md-6">
                   <div class="thumbnail">
                     <div class="caption">
-                        <h1>{{row[0]}}</h1>
-                        <h4>{{row[1]}}</h4>
-                        <p>{{row[2]}}</p>
-                      <p>
-                          <a href="/show" class="btn btn-default" role="button">Läs hela artikeln</a>
+
+                            <h1>{{(r["rubrik"])}}</h1>
+                            <h4>{{(r["ingress"])}}</h4>
+                            <p>
+                            {{(r["publiceringsdatum"])}}
+                            </p>
+
+                          <a href="/show/{{(r["artikelid"])}}" class="btn btn-default" role="button">Läs hela artikeln</a>
                         <link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
                       </p>
                     </div>

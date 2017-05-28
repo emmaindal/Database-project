@@ -51,14 +51,14 @@
         </header>
         <section>
             <div class="where-the-article-is-placed">
-                %for row in artikel:
-                    <h1>{{row[0]}}</h1>
-                    <h4>{{row[1]}}</h4>
-                    <p>{{row[2]}}</p>
-                    <br>
-                    <p>Skribent: {{row[3]}}</p>
-                    <br>
-                    <img src="{{row[4]}}" height="100%" width="100%" alt="">
+                %for r in artikel:
+                    <h1>{{(r["rubrik"])}}</h1>
+                    <h4>{{(r["ingress"])}}</h4>
+                    <p>
+                    {{(r["brödtext"])}}
+                    </p>
+                    <p>Skribent: {{(r["namn"])}}</p>
+                        <img src="{{(r["foto"])}}" height="100%" width="100%" alt="">
                 %end
                 <div class="detailBox">
                     <div class="titleBox">
@@ -72,35 +72,27 @@
                     <div class="actionBox">
                         <ul class="commentList">
                             <li>
-
-                                <div class="commentText"><button type="button" class="close" aria-hidden="true">&times;</button>
-                                    <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
+                                %for r in kommentar:
+                                <br>
+                                <div class="commentText">
+                                    <p class="">{{(r["kommentartext"])}}<br>{{(r["datum"])}}<br>{{(r["tid"])}}</p>
                                 </div>
-                            </li>
-                            <li>
-
-                                <div class="commentText"><button type="button" class="close" aria-hidden="true">&times;</button>
-                                    <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                </div>
-                            </li>
-                            <li>
-
-                                <div class="commentText"><button type="button" class="close" aria-hidden="true">&times;</button>
-                                    <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-                                </div>
+                                %end
                             </li>
                         </ul>
-                        <form class="form-inline" role="form">
+                        <form class="form-inline" role="form" action="/lagrad_kommentar" method="POST">
                             <div class="form-group">
-                                <input class="form-control" type="text" placeholder="Your comments" />
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-default">Kommentera</button>
+                                <input type="text" name="signatur" id="signatur" class="form-control" placeholder="Din signatur här." required>
+                                <textarea class="form-control" id="kommentartext" name="kommentartext" rows="12" placeholder="Skriv din kommentar här!" required></textarea>
+                                <div class="form-group row">
+                                    <div class="col-10">
+                                        <input class="form-control" name="datum" type="date" id="datum">
+                                        <input class="form-control" name="tid" type="time" id="tid">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-default">Kommentera</a>
                             </div>
                         </form>
-
                     </div>
                 </div>
                 <br>

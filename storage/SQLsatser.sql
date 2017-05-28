@@ -7,7 +7,7 @@ Drop database if exists projekt_mörtfors_emma_matilda;
 
 CREATE TABLE artikel(artikelid INT NOT NULL PRIMARY KEY, rubrik VARCHAR(40), ingress TEXT, brödtext TEXT, publiceringsdatum DATE, fotoid INT, kategoriid INT);
 
-CREATE TABLE skribent(skribentid INT NOT NULL PRIMARY KEY, namn VARCHAR(40), personnummer INT, anteckning VARCHAR(60));
+CREATE TABLE skribent(skribentid INT NOT NULL PRIMARY KEY, namn VARCHAR(40), personnummer VARCHAR(12), anteckning VARCHAR(60));
 
 CREATE TABLE skrivenav(skribentid INT NOT NULL, artikelid INT NOT NULL);
 
@@ -15,7 +15,7 @@ CREATE TABLE bild(fotoid INT NOT NULL PRIMARY KEY, altnamn VARCHAR(40), foto tex
 
 CREATE TABLE bildtext(textid INT NOT NULL PRIMARY KEY, btext text NOT NULL);
 
-CREATE TABLE kommentar(kommentarsid INT NOT NULL PRIMARY KEY, datum DATE NOT NULL, tid TIME, signatur VARCHAR(40), artikelid INT NOT NULL);
+CREATE TABLE kommentar(kommentarsid INT NOT NULL PRIMARY KEY, kommentartext text, datum DATE NOT NULL, tid TIME, signatur VARCHAR(40), artikelid INT NOT NULL);
 
 CREATE TABLE kategori(kategoriid INT NOT NULL PRIMARY KEY, huvudkategori VARCHAR(20) NOT NULL, underkategori VARCHAR(20), underkategori2 VARCHAR(20));
 
@@ -26,10 +26,6 @@ FOREIGN KEY (kategoriid) REFERENCES kategori(kategoriid);
 ALTER TABLE artikel
 ADD CONSTRAINT FK_bild
 FOREIGN KEY (fotoid) REFERENCES bild(fotoid);
-
-ALTER TABLE bildtext
-ADD CONSTRAINT FK_bildtext
-FOREIGN KEY (textid) REFERENCES bild(fotoid);
 
 ALTER TABLE kommentar
 ADD CONSTRAINT FK_kommentar

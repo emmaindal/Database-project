@@ -5,73 +5,101 @@ from bottle import get, route, run, template, static_file, redirect, request, er
 import random
 import os, sys
 import psycopg2
+import psycopg2.extras as e
 import urllib
 
 # connect to database
 try:
-    conn = psycopg2.connect(dbname="db_project", host="localhost", port="5432")
+    conn = psycopg2.connect(dbname="projekt_mörtfors_emma_matilda", host="localhost", port="5432")
     print ("Opened database successfully")
 
 except:
     print("Could not connect to database")
 
-cur = conn.cursor()
-
-def skriven_av():
-    pass
-
-def skriv_ut_kategorier():
-    pass
+cur = conn.cursor(cursor_factory=e.DictCursor)
 
 @route("/")
 def index():
-	cur.execute("SELECT rubrik,ingress,publiceringsdatum from artikel")
-	artiklar = cur.fetchall()
+    cur.execute("SELECT artikelid,rubrik,ingress,publiceringsdatum from artikel ORDER BY publiceringsdatum desc")
+    artikel = cur.fetchall()
+    for r in artikel:
+        rubrik = (r["rubrik"])
+        ingress = (r["ingress"])
+        publiceringsdatum = (r["publiceringsdatum"])
+        artikelidpar = (r["artikelid"])
 
-	return template("index.html", artiklar=artiklar)
+    return template("index.html", artikel=artikel)
 
 @route("/create", method="GET")
-def show_create_form():
+def visa_artikel_form():
     #skriver ut de huvudkategorier som går att välja på.
     cur.execute("SELECT huvudkategori from kategori")
-    huvudkategori = cur.fetchall()
-    print(huvudkategori)
+    kategori = cur.fetchall()
 
     #skriver ut skribenter som lagrats i databasen i en dropdown.
-    cur.execute("SELECT namn from skribent")
+    cur.execute("SELECT skribentid from skribent")
     skribent = cur.fetchall()
-    print(skribent)
 
     #skriver ut de foton som lagrats i databasen i en dropdown,
     cur.execute("SELECT fotoid from bild")
     bild = cur.fetchall()
+    conn.commit()
 
-    return template("create.html", skribent=skribent, bild=bild, huvudkategori=huvudkategori)
+    return template("create.html", skribent=skribent, bild=bild, kategori=kategori)
 
-@route("/show", method="GET")
-def visa_hela_artikeln():
-    cur.execute("SELECT artikel.rubrik,artikel.ingress,artikel.brödtext,skribent.namn, bild.foto FROM artikel,skribent,bild where artikel.rubrik = 'test'")
+@route("/show/<artikelidpar>")
+def visa_hela_artikeln(artikelidpar):
+    cur.execute("SELECT artikel.artikelid, artikel.rubrik, artikel.ingress, artikel.brödtext, skribent.namn, bild.foto from (artikel JOIN skrivenav ON artikel.artikelid = skrivenav.artikelid join skribent on skribent.skribentid = skrivenav.skribentid JOIN bild ON artikel.fotoid = bild.fotoid) where artikel.artikelid = %s", [artikelidpar])
     artikel = cur.fetchall()
-    print(artikel)
+    for r in artikel:
+        artikelid = (r["artikelid"])
+        rubrik = (r["rubrik"])
+        ingress = (r["ingress"])
+        brödtext = (r["brödtext"])
+        skribent = (r["namn"])
+        foto = (r["foto"])
 
-    return template("show.html", artikel=artikel)
+    cur.execute("SELECT kommentartext, datum, tid from kommentar where artikelid = %s", [artikelidpar])
+    kommentar = cur.fetchall()
+    for r in kommentar:
+        kommentartext = (r["kommentartext"])
+        datum = (r["datum"])
+        tid = (r["tid"])
+
+
+    return template("show.html", artikel=artikel, artikelid=artikelid, kommentar=kommentar, artikelidpar=artikelidpar)
+
+@route("/lagrad_kommentar", method="POST")
+def kommentar_anv():
+    kommentarsid = random.randint(1,10000)
+    kommentartext = request.forms.get("kommentartext")
+    datum = request.forms.get("datum")
+    tid = request.forms.get("tid")
+    signatur = request.forms.get("signatur")
+    artikelidpar = '7872'
+
+
+    cur.execute("INSERT INTO kommentar(kommentarsid, kommentartext, datum, tid, signatur, artikelid) VALUES(%s,%s,%s,%s,%s,%s)",(kommentarsid, kommentartext, datum, tid, signatur, artikelidpar))
+    conn.commit()
+
+    return template("lagrad_kommentar.html", artikelid=artikelidpar)
 
 @route("/update", method="POST")
-def store_article():
-    skribentid = requestforms.get("skribentid")
-    artikelid = random.randint(1,100)
+def lagrad_artikel():
+    skribentid = request.forms.get("skribentid")
+    artikelid = random.randint(1,10000)
     rubrik = request.forms.get("rubrik")
     ingress = request.forms.get("ingress")
     text = request.forms.get("text")
     publiceringsdatum = request.forms.get("publiceringsdatum")
-    #bild = request.forms.get("bild")
-    kategoriid = "1"
+    bild = request.forms.get("bild")
+    textid = random.randint(1,10000)
+    bildtext = request.forms.get("bildtext")
 
-    print(artikelid, rubrik, ingress, text, publiceringsdatum, bild, kategoriid)
 
-    cur.execute("INSERT INTO artikel(artikelid, rubrik, ingress, brödtext, publiceringsdatum, kategoriid) VALUES(%s,%s,%s,%s,%s,%s,%s)",(artikelid, rubrik, ingress, text, publiceringsdatum, bild, kategoriid))
-    conn.commit()
+    cur.execute("INSERT INTO artikel(artikelid, rubrik, ingress, brödtext, publiceringsdatum, fotoid) VALUES(%s,%s,%s,%s,%s,%s)",(artikelid, rubrik, ingress, text, publiceringsdatum, bild))
     cur.execute("INSERT INTO skrivenav(artikelid, skribentid) VALUES(%s,%s)",(artikelid, skribentid))
+    cur.execute("INSERT INTO bildtext(textid, btext) VALUES(%s, %s)", (textid, bildtext))
     conn.commit()
 
     return template("sparad_artikel.html")
@@ -83,11 +111,10 @@ def skribent():
 
 @route("/lagrad_skribent", method="POST")
 def lagrad_skribent():
-    skribentid = random.randint(1,100)
+    skribentid = random.randint(1,10000)
     namn = request.forms.get("namn")
     personnummer = request.forms.get("personnummer")
 
-    print(skribentid, namn, personnummer)
 
     cur.execute("INSERT INTO skribent(skribentid, namn, personnummer) VALUES(%s,%s,%s)",(skribentid, namn, personnummer))
     conn.commit()
@@ -102,11 +129,10 @@ def contact():
 
 @route("/lagrad_bild", method="POST")
 def lagrad_bild():
-    fotoid = random.randint(1,100)
+    fotoid = random.randint(1,10000)
     altnamn = request.forms.get("altnamn")
     foto = request.forms.get('foto')
 
-    print(fotoid, altnamn, foto)
     cur.execute("INSERT INTO bild(fotoid, altnamn, foto) VALUES(%s,%s,%s)",(fotoid, altnamn, foto))
     conn.commit()
 
