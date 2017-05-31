@@ -1,142 +1,139 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from bottle import get, route, run, template, static_file, redirect, request, error
 import random
 import os, sys
 import psycopg2
 import psycopg2.extras as e
-import urllib
 
 # connect to database
 try:
     conn = psycopg2.connect(dbname="projekt_mörtfors_emma_matilda", host="localhost", port="5432")
+
     print ("Opened database successfully")
+    cur = conn.cursor(cursor_factory=e.DictCursor)
 
 except:
     print("Could not connect to database")
-
-cur = conn.cursor(cursor_factory=e.DictCursor)
 
 @route("/")
 def index():
     cur.execute("SELECT artikelid,rubrik,ingress,publiceringsdatum from artikel ORDER BY publiceringsdatum desc")
     artikel = cur.fetchall()
-    for r in artikel:
-        rubrik = (r["rubrik"])
-        ingress = (r["ingress"])
-        publiceringsdatum = (r["publiceringsdatum"])
-        artikelidpar = (r["artikelid"])
 
     return template("index.html", artikel=artikel)
 
-@route("/create", method="GET")
-def visa_artikel_form():
+@route("/articles/create", method="GET")
+def create_article_form():
     #skriver ut de huvudkategorier som går att välja på.
     cur.execute("SELECT huvudkategori from kategori")
     kategori = cur.fetchall()
 
     #skriver ut skribenter som lagrats i databasen i en dropdown.
-    cur.execute("SELECT skribentid from skribent")
+    cur.execute("SELECT skribentid,namn from skribent")
     skribent = cur.fetchall()
 
     #skriver ut de foton som lagrats i databasen i en dropdown,
-    cur.execute("SELECT fotoid from bild")
+    cur.execute("SELECT bildid,altnamn from bild")
     bild = cur.fetchall()
-    conn.commit()
 
-    return template("create.html", skribent=skribent, bild=bild, kategori=kategori)
+    return template("create_article.html", skribent=skribent, bild=bild, kategori=kategori)
 
-@route("/show/<artikelidpar>")
-def visa_hela_artikeln(artikelidpar):
-    cur.execute("SELECT artikel.artikelid, artikel.rubrik, artikel.ingress, artikel.brödtext, skribent.namn, bild.foto from (artikel JOIN skrivenav ON artikel.artikelid = skrivenav.artikelid join skribent on skribent.skribentid = skrivenav.skribentid JOIN bild ON artikel.fotoid = bild.fotoid) where artikel.artikelid = %s", [artikelidpar])
-    artikel = cur.fetchall()
-    for r in artikel:
-        artikelid = (r["artikelid"])
-        rubrik = (r["rubrik"])
-        ingress = (r["ingress"])
-        brödtext = (r["brödtext"])
-        skribent = (r["namn"])
-        foto = (r["foto"])
+@route("/articles", method="POST")
+def store_article():
+    bild_ids = request.forms.getall("images")
+    bild_texter = request.forms.getall("imagetexts")
+    bilder = []
 
-    cur.execute("SELECT kommentartext, datum, tid from kommentar where artikelid = %s", [artikelidpar])
-    kommentar = cur.fetchall()
-    for r in kommentar:
-        kommentartext = (r["kommentartext"])
-        datum = (r["datum"])
-        tid = (r["tid"])
+    for i in range(0, len(bild_ids)):
+        bilder.append({ 'id': bild_ids[i], 'text': bild_texter[i] })
 
-
-    return template("show.html", artikel=artikel, artikelid=artikelid, kommentar=kommentar, artikelidpar=artikelidpar)
-
-@route("/lagrad_kommentar", method="POST")
-def kommentar_anv():
-    kommentarsid = random.randint(1,10000)
-    kommentartext = request.forms.get("kommentartext")
-    datum = request.forms.get("datum")
-    tid = request.forms.get("tid")
-    signatur = request.forms.get("signatur")
-    artikelidpar = '7872'
-
-
-    cur.execute("INSERT INTO kommentar(kommentarsid, kommentartext, datum, tid, signatur, artikelid) VALUES(%s,%s,%s,%s,%s,%s)",(kommentarsid, kommentartext, datum, tid, signatur, artikelidpar))
-    conn.commit()
-
-    return template("lagrad_kommentar.html", artikelid=artikelidpar)
-
-@route("/update", method="POST")
-def lagrad_artikel():
-    skribentid = request.forms.get("skribentid")
-    artikelid = random.randint(1,10000)
     rubrik = request.forms.get("rubrik")
     ingress = request.forms.get("ingress")
     text = request.forms.get("text")
     publiceringsdatum = request.forms.get("publiceringsdatum")
-    bild = request.forms.get("bild")
-    textid = random.randint(1,10000)
-    bildtext = request.forms.get("bildtext")
 
+    cur.execute("INSERT INTO artikel(rubrik, ingress, brödtext, publiceringsdatum) VALUES(%s,%s,%s,%s) RETURNING artikelid",(rubrik, ingress, text, publiceringsdatum))
+    artikel_id = cur.fetchone()[0]
 
-    cur.execute("INSERT INTO artikel(artikelid, rubrik, ingress, brödtext, publiceringsdatum, fotoid) VALUES(%s,%s,%s,%s,%s,%s)",(artikelid, rubrik, ingress, text, publiceringsdatum, bild))
-    cur.execute("INSERT INTO skrivenav(artikelid, skribentid) VALUES(%s,%s)",(artikelid, skribentid))
-    cur.execute("INSERT INTO bildtext(textid, btext) VALUES(%s, %s)", (textid, bildtext))
+    for bild in bilder:
+        cur.execute("INSERT INTO artikel_bild (artikelid, bildid, bildtext) VALUES (%s, %s, %s)", (artikel_id, bild["id"], bild["text"]))
+
+    skribentiddata = request.forms.getall("skribentid")
+    for skribentid in skribentiddata:
+        cur.execute("INSERT INTO artikel_skribent(artikelid, skribentid) VALUES(%s,%s)",(artikel_id, skribentid))
+
     conn.commit()
 
-    return template("sparad_artikel.html")
+    return template("stored_article.html")
 
-@route("/skribent", method="GET")
-def skribent():
+@route("/articles/<artikel_id>")
+def show_article(artikel_id):
+    cur.execute("""
+    SELECT artikel.artikelid, artikel.rubrik, artikel.ingress, artikel.brödtext
+    FROM artikel
+    WHERE artikel.artikelid = %s""", [artikel_id])
+    artikel = cur.fetchone()
 
-    return template("skribent.html")
+    cur.execute("SELECT namn FROM skribent JOIN artikel_skribent ON artikel_skribent.skribentid = skribent.skribentid WHERE artikel_skribent.artikelid = %s", [artikel_id])
+    authors = ", ".join(map(lambda x: x[0], cur.fetchall()))
 
-@route("/lagrad_skribent", method="POST")
-def lagrad_skribent():
-    skribentid = random.randint(1,10000)
+    cur.execute("SELECT kommentarsid, signatur, kommentartext, datum, tid from kommentar where artikelid = %s", [artikel_id])
+    kommentar = cur.fetchall()
+
+    cur.execute("SELECT foto, altnamn, bildtext FROM artikel_bild JOIN bild ON bild.bildid = artikel_bild.bildid WHERE artikel_bild.artikelid = %s", [artikel_id])
+    bilder = cur.fetchall()
+
+    return template("show_article.html", artikel=artikel, authors=authors, kommentar=kommentar, bilder=bilder)
+
+@route("/articles/<artikel_id>/comments", method="POST")
+def store_comment(artikel_id):
+    kommentartext = request.forms.get("kommentartext")
+    datum = request.forms.get("datum")
+    tid = request.forms.get("tid")
+    signatur = request.forms.get("signatur")
+    artikelid = artikel_id
+
+    cur.execute("INSERT INTO kommentar(kommentartext, datum, tid, signatur, artikelid) VALUES (%s,%s,%s,%s,%s)",(kommentartext, datum, tid, signatur, artikelid))
+    conn.commit()
+
+    return template("stored_comment.html")
+
+@route("/comments/<kommentar_id>/delete")
+def delete_comment(kommentar_id):
+
+    cur.execute("DELETE FROM kommentar WHERE kommentarsid = %s", [kommentar_id])
+    conn.commit()
+
+    return template("delete_comment.html")
+
+@route("/authors/create", method="GET")
+def create_author_form():
+    return template("create_author.html")
+
+@route("/authors", method="POST")
+def store_author():
     namn = request.forms.get("namn")
     personnummer = request.forms.get("personnummer")
 
-
-    cur.execute("INSERT INTO skribent(skribentid, namn, personnummer) VALUES(%s,%s,%s)",(skribentid, namn, personnummer))
+    cur.execute("INSERT INTO skribent(namn, personnummer) VALUES(%s,%s)",(namn, personnummer))
     conn.commit()
 
+    return template("stored_author.html")
 
-    return template("lagrad_skribent.html")
+@route("/images/create")
+def create_image_form():
+    return template("upload_images.html")
 
-@route("/bild")
-def contact():
-
-    return template("bild.html")
-
-@route("/lagrad_bild", method="POST")
-def lagrad_bild():
-    fotoid = random.randint(1,10000)
+@route("/images", method="POST")
+def store_image():
     altnamn = request.forms.get("altnamn")
     foto = request.forms.get('foto')
 
-    cur.execute("INSERT INTO bild(fotoid, altnamn, foto) VALUES(%s,%s,%s)",(fotoid, altnamn, foto))
+    cur.execute("INSERT INTO bild(altnamn, foto) VALUES(%s,%s)",(altnamn, foto))
     conn.commit()
 
-    return template("lagrad_bild.html")
+    return template("stored_images.html")
 
 @route("/contact")
 def contact():
@@ -150,6 +147,5 @@ def server_static(filename):
 @error(404)
 def error404(error):
     return template("error.html")
-
 
 run(host="127.0.0.1", port=8080)

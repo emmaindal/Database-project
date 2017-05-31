@@ -118,9 +118,17 @@ h2{
     border:1px solid #bbb;
     margin-top:10%;
 }
+
+.detailBox p{
+    text-align: left;
+}
+.close{
+    text-align: right;
+}
 .titleBox {
     background-color:#fdfdfd;
     padding:10px;
+    text-align: left;
 }
 .titleBox label{
   color:#444;
@@ -133,7 +141,7 @@ h2{
     border-top:1px dotted #bbb;
 }
 .commentBox .form-group:first-child, .actionBox .form-group:first-child {
-    width: 55vh;
+    width: 100%;
 }
 .commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
     width:auto;
@@ -143,6 +151,7 @@ h2{
 }
 .taskDescription {
     margin-top:10px 0;
+    text-align: left;
 }
 .commentList {
     padding:0;
@@ -153,7 +162,6 @@ h2{
 }
 .commentList li {
     margin:0;
-    margin-top:10px;
 }
 .commentList li > div {
     display:table-cell;

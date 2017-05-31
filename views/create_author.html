@@ -16,6 +16,7 @@
 <body>
     <div class="container">
         <header>
+
             <nav class="navbar navbar-default navbar-fixed-top">
                 <div class="container">
                     <div class="container-fluid">
@@ -33,39 +34,42 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li><a href="/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/skribent">Lägg till skribent<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/bild">Lägg till bild<span class="sr-only">(current)</span></a></li>
-
+                                <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/authors/create">Lägg till skribent<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/images/create">Lägg till bild<span class="sr-only">(current)</span></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="/contact">Kontakt</a></li>
                             </ul>
 
-                        </div><!-- /.navbar-collapse -->
-                    </div>
+                        </div>
+                    </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
+        <section>
+            <h1>Lägg till dig själv som skribent för att skapa en artikel</h1>
+            <div class="add_article_form">
 
-        <section class="welcome-info-to-user">
-            <h1>Din bild är nu tillagd på Mörtfors Dagblad</h1>
-            <br>
-            <a href="/skribent" class="btn btn-default" role="button">Lägg till skribent</a>
-            <br>
-            <br>
-            <a href="/create" class="btn btn-default" role="button">Skriv en artikel</a>
+                <form class="new_article" action="/authors" method="POST">
+                    <label for="namn">Namn:</label>
+                    <input type="namn" name="namn" id="namn" value="" class="form-control" placeholder="Ditt namn här tack!" required>
+                    <label for="personnummer">Personnummer:</label>
+                    <input type="personnummer" name="personnummer" id="personnummer" value="" class="form-control" placeholder="Ange personnummer enligt följande format: 941222-3432" required>
+                <button type="submit" class="btn btn-default">Lägg till</button>
+                </form>
 
-
+            </div>
         </section>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
     </div>
 </body>
-<!-- Latest compiled and minified JavaScript -->
-<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-crossorigin="anonymous"></script>
 </html>
