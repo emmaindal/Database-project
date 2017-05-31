@@ -34,9 +34,9 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li><a href="/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/skribent">Lägg till skribent<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/bild">Lägg till bild<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/authors/create">Lägg till skribent<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/images/create">Lägg till bild<span class="sr-only">(current)</span></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -52,7 +52,7 @@
             <h1>Lägg till dig själv som skribent för att skapa en artikel</h1>
             <div class="add_article_form">
 
-                <form class="new_article" action="/lagrad_skribent" method="POST">
+                <form class="new_article" action="/authors" method="POST">
                     <label for="namn">Namn:</label>
                     <input type="namn" name="namn" id="namn" value="" class="form-control" placeholder="Ditt namn här tack!" required>
                     <label for="personnummer">Personnummer:</label>

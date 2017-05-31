@@ -34,10 +34,9 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li><a href="/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/skribent">Lägg till skribent<span class="sr-only">(current)</span></a></li>
-                                <li><a href="/bild">Lägg till bild<span class="sr-only">(current)</span></a></li>
-
+                                <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/authors/create">Lägg till skribent<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/images/create">Lägg till bild<span class="sr-only">(current)</span></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -50,49 +49,20 @@
             </nav>
         </header>
         <section>
-            <h1>Skapa en ny artikel här</h1>
+            <h1>Lägg till bild för att kunna använda den i dina artikel</h1>
             <div class="add_article_form">
 
-                <form class="new_article" action="/update" method="POST">
+                <form class="new_article" action="/images" method="POST">
                     <div class="form-group">
-                       <label for="exampleSelect1">Välj skribent:</label>
-                           <select class="form-control" id="skribentid">
-                             %for namn in skribent:
-                             <option>{{namn}}</option>
-                             %end
-                            </select>
-                     </div>
-                    <label for="rubrik">Rubrik:</label>
-                    <input type="text" name="rubrik" id="rubrik" value="" class="form-control" placeholder="Rubrik här tack!" required>
-                    <label for="ingress">Ingress:</label>
-                    <input type="text" name="ingress" id="ingress" value="" class="form-control" placeholder="Ingress här tack!" required>
-                    <label for="text">Brödtext:</label>
-                    <textarea class="form-control" id="text" name="text" rows="12" placeholder="Skriv din artikel här!" required></textarea>
-                    <div class="form-group">
-                       <label for="huvudkategori">Välj huvudkatekori:</label>
-                           <select class="form-control" id="huvudkategori">
-                             %for huvudkategori in huvudkategori:
-                             <option>{{huvudkategori}}</option>
-                             %end
-                            </select>
-                     </div>
-                    <div class="form-group">
-                        <label for="foto">Välj bild:</label>
-                            <select name="foto" class="form-control" id="foto">
-                                %for fotoid in bild:
-                                  <option>{{fotoid}}</option>
-                                %end
-                             </select>
+                        <small id="foto" class="form-text text-muted"><a target="_blank" href="https://www.pexels.com/">Gå in här!</a> Välj en bild, tryck på "Free download", kopiera bildens url och klistra in här.</small>
+                        <br />
+                        <label for="foto">Lägg upp din url till bilden:</label>
+                        <input type="text" class="form-control" name="foto" id="foto" aria-describedby="foto" required>
 
-                        <small id="bild" class="form-text text-muted">Här kan du lägga upp en bild som tillhör din artikel.</small>
                     </div>
-                    <div class="form-group row">
-                        <label for="example-datetime-local-input" class="col-2 col-form-label" required>Datum och tid</label>
-                        <div class="col-10">
-                            <input class="form-control" name="publiceringsdatum" type="datetime-local" value="2017-01-01T13:45:00" id="example-datetime-local-input">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-default">Publicera</button>
+                    <label for="altnamn">Alt-namn:</label>
+                    <input type="text" name="altnamn" id="altnamn" value="" class="form-control" placeholder="Ett ord som beskriver vad bilden föreställer!" required>
+                    <button type="submit" name="submit" class="btn btn-default">Lägg till</button>
                 </form>
 
             </div>

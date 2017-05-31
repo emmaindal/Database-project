@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MÖRTFORS DAGBLAD</title>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <link rel="stylesheet" href="/static/style.css" media="screen" title="no title">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="/">MÖRTFORS DAGBLAD</a>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a href="/articles/create">Skapa ny artikel<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/authors/create">Lägg till skribent<span class="sr-only">(current)</span></a></li>
+                                <li><a href="/images/create">Lägg till bild<span class="sr-only">(current)</span></a></li>
+
+                            </ul>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="/contact">Kontakt</a></li>
+                            </ul>
+
+                        </div>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+        <section>
+            <h1>Skapa en ny artikel här</h1>
+            <div class="add_article_form">
+
+                <form class="new_article" action="/articles" method="POST">
+                    <div class="form-group">
+                       <label for="skribentid">Välj skribent:</label>
+                        <div class="checkbox">
+                        %for r in skribent:
+
+                            <label><input multiple="multiple" type="checkbox" id="skribentid" name="skribentid" value="{{(r["skribentid"])}}">{{(r["namn"])}}</label>
+
+                        %end
+                        </div>
+
+                     </div>
+                    <label for="rubrik">Rubrik:</label>
+                    <input type="text" name="rubrik" id="rubrik" value="" class="form-control" placeholder="Rubrik här tack!" required>
+                    <label for="ingress">Ingress:</label>
+                    <input type="text" name="ingress" id="ingress" value="" class="form-control" placeholder="Ingress här tack!" required>
+                    <label for="text">Brödtext:</label>
+                    <textarea class="form-control" id="text" name="text" rows="12" placeholder="Skriv din artikel här!" required></textarea>
+                    <div class="form-group">
+                       <label for="huvudkategori">Välj huvudkatekori:</label>
+                           <select class="form-control" id="huvudkategori">
+                              %for x in kategori:
+
+                                 <option>{{x}}</option>
+                             %end
+                            </select>
+                     </div>
+                    <div class="form-group">
+                        <label for="bild">Välj bild:</label>
+                        <small id="bild" class="form-text text-muted">Här kan du välja att lägga till en bild som tillhör din artikel. Finns inte bilden? <a href="/images/create">Ladda upp den här!</a></small>
+                        <select id="image-select" class="form-control">
+                        </select>
+
+                        <div id="selected-images">
+
+                        </div>
+                        <script>
+                            var images = [
+                                %for r in bild:
+                                    { id: {{! r["bildid"] }}, name: '{{! r["altnamn"] }}' },
+                                %end
+                            ];
+
+                            var selectedImages = [];
+
+                            var s = document.getElementById("image-select");
+
+                            s.addEventListener('change', function (e) {
+                                selectImage(e.target.value);
+                                render();
+                            });
+
+                            function selectImage(id) {
+                                selectedImages.push(id);
+                                console.log(selectedImages);
+                            }
+
+                            function filteredImages() {
+                                return images.filter(function (image) {
+                                    for (var i = 0; i < selectedImages.length; i++) {
+                                        if (selectedImages[i] == image.id) {
+                                            return false;
+                                        }
+                                    }
+
+                                    return true;
+                                });
+                            }
+
+                            function render() {
+                                renderSelect();
+                                renderSelectedImages();
+                            }
+
+                            function renderSelectedImages() {
+                                var container = document.getElementById('selected-images');
+                                var children = [];
+                                container.innerHTML = '';
+
+                                console.log('selectedImages length', selectedImages.length);
+
+                                for (var i = 0; i < selectedImages.length; i++) {
+                                    console.log('creating subcontainer ' + selectedImages[i])
+                                    var subContainer = document.createElement('div');
+                                    subContainer.style.marginBottom = '5px';
+                                    subContainer.style.paddingBottom = '5px';
+                                    subContainer.style.borderBottom = '1px solid #ccc';
+
+                                    var label = document.createElement('label');
+                                    label.innerHTML = findNameForImage(selectedImages[i]);
+                                    label.setAttribute('for', 'bildtext-'+selectedImages[i]);
+                                    var hidden = document.createElement('input');
+                                    hidden.setAttribute('type', 'hidden');
+                                    hidden.setAttribute('name', 'images');
+                                    hidden.setAttribute('value', selectedImages[i]);
+                                    var input = document.createElement('input');
+                                    input.setAttribute('name', 'imagetexts');
+                                    input.setAttribute('id', 'bildtext-'+selectedImages[i]);
+                                    input.setAttribute('type', 'text');
+                                    input.setAttribute('class', 'form-control');
+                                    input.setAttribute('placeholder', 'Bildtext');
+
+                                    subContainer.appendChild(label);
+                                    subContainer.appendChild(input);
+                                    subContainer.appendChild(hidden);
+
+                                    children.push(subContainer);
+                                }
+
+                                console.log('children length', children.length);
+
+                                for (var i = 0; i < children.length; i++) {
+                                    container.appendChild(children[i]);
+                                }
+                            }
+
+                            function findNameForImage(id) {
+                                for (var i = 0; i < images.length; i++) {
+                                    if (images[i].id == id) {
+                                        return images[i].name;
+                                    }
+                                }
+                            }
+
+                            function renderSelect() {
+                                s.innerHTML = '';
+                                var d = document.createElement('option');
+                                d.innerHTML = "Välj en bild för att lägga till"
+                                d.setAttribute('disabled', true);
+                                d.setAttribute('selected', true);
+                                s.appendChild(d);
+
+                                var images = filteredImages();
+
+                                for (var i = 0; i < images.length; i++) {
+                                    var o = document.createElement('option');
+                                    o.setAttribute('value', images[i].id);
+                                    o.innerHTML = images[i].name;
+                                    s.appendChild(o);
+                                }
+                            }
+
+                            render();
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publiceringsdatum" class="col-2 col-form-label">Datum och tid</label>
+                        <div class="col-10">
+                            <input class="form-control" name="publiceringsdatum" type="datetime-local" id="publiceringsdatum" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default">Publicera</button>
+                </form>
+
+            </div>
+        </section>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    </div>
+</body>
+</html>
